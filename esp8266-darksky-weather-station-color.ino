@@ -1,5 +1,5 @@
 /**The MIT License (MIT)
-  Copyright (c) 2018 by Daniel Eichhorn
+  Copyright (c) 2020 by Tony Greening
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
   in the Software without restriction, including without limitation the rights
@@ -15,9 +15,10 @@
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
-  See more at https://blog.squix.org
+
 */
 
+//Based on the work of Daniel Einhorn -- adapted for DarkSky API
 
 /*****************************
    Important: see settings.h to configure your settings!!!
@@ -170,8 +171,7 @@ void setup() {
     delay(500);
     Serial.print(".");
   }
-  //Serial.printf("After wifi setup: %d", ESP.getFreeHeap());
-  //Serial.println();
+
   drawProgress(100, "Formatting done");
   boolean isCalibrationAvailable = touchController.loadCalibration();
   if (!isCalibrationAvailable) {
@@ -193,12 +193,7 @@ void setup() {
   carousel.setFrames(frames, frameCount);
   carousel.disableAllIndicators();
 
-  // update the weather information
-  //Serial.printf("Before update data: %d", ESP.getFreeHeap());
-  //Serial.println();
   updateData();
-  //Serial.printf("After update data: %d", ESP.getFreeHeap());
-  //Serial.println();
   timerPress = millis();
   canBtnPress = true;
 }
@@ -232,11 +227,6 @@ void loop() {
       delay(remainingTimeBudget);
     }
     drawCurrentWeather();
-    // int x = 0;
-    //int y = 0;
-    //drawForecastDetail(x + 10, y + 165, 0);
-    //drawForecastDetail(x + 95, y + 165, 1);
-    //drawForecastDetail(x + 180, y + 165, 2);
     drawAstronomy();
   } else if (screen == 1) {
     drawCurrentWeatherDetail();
@@ -391,12 +381,6 @@ void drawForecast2(MiniGrafx * display, CarouselState * state, int16_t x, int16_
   drawForecastDetail(x + 180, y + 165, 5);
 }
 
-/* void drawForecast3(MiniGrafx * display, CarouselState * state, int16_t x, int16_t y) {
-  drawForecastDetail(x + 10, y + 165, 6);
-  drawForecastDetail(x + 95, y + 165, 7);
-  drawForecastDetail(x + 180, y + 165, 8);
-  }*/
-
 // helper for the data columns
 void drawForecastDetail(uint16_t x, uint16_t y, uint8_t dayIndex) {
   gfx.setColor(MINI_YELLOW);
@@ -414,6 +398,13 @@ void drawForecastDetail(uint16_t x, uint16_t y, uint8_t dayIndex) {
   gfx.drawPalettedBitmapFromPgm(x, y + 15, getMiniMeteoconIconFromProgmem(data.forecasts[dayIndex].forecastIcon));
   gfx.setColor(MINI_BLUE);
   gfx.drawString(x + 25, y + 60, data.forecasts[dayIndex].PoP + "%");
+
+  gfx.setTextAlignment(TEXT_ALIGN_LEFT);
+  gfx.setColor(MINI_YELLOW);
+  gfx.drawString(120, 250, "Today");
+  gfx.setColor(MINI_WHITE);
+  gfx.drawString(120, 276, "Humidity: " + data.forecasts[0].forecastHumidity + "%");
+  gfx.drawString(120, 291, "Precip: " + data.forecasts[0].forecastPrecipTotal + " in");
 }
 
 // draw moonphase and sunrise/set and moonrise/set
@@ -431,17 +422,13 @@ void drawAstronomy() {
   //gfx.drawString(120, 250, astronomy.moonPhase);
   gfx.setTextAlignment(TEXT_ALIGN_LEFT);
   gfx.setColor(MINI_YELLOW);
-  gfx.drawString(5, 250, "Sun");
+  gfx.drawString(5, 250, SUN_MOON_TEXT[0]);
   gfx.setColor(MINI_WHITE);
-  gfx.drawString(5, 276, data.sunrise);
-  gfx.drawString(5, 291, data.sunset);
-
-  /*    gfx.setTextAlignment(TEXT_ALIGN_RIGHT);
-      gfx.setColor(MINI_YELLOW);
-      gfx.drawString(235, 250, "Moon");
-      gfx.setColor(MINI_WHITE);
-      gfx.drawString(235, 276, astronomy.moonriseTime);
-      gfx.drawString(235, 291, astronomy.moonsetTime);*/
+  gfx.drawString(5, 276, SUN_MOON_TEXT[1]);
+  gfx.drawString(5, 291, SUN_MOON_TEXT[2]);
+  gfx.setTextAlignment(TEXT_ALIGN_RIGHT);
+  gfx.drawString(100, 276,  data.sunrise);
+  gfx.drawString(100, 291,  data.sunset);
 }
 
 void drawCurrentWeatherDetail() {

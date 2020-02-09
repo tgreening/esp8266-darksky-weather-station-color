@@ -187,7 +187,7 @@ void DarkSky::value(String value) {
 
   if (currentKey == "apparentTemperature" && forecastDay < this->maxForecasts) {
     if (currentParent == TODAYS_DATA) {
-      data->feelslike = String(value);
+      data->feelslike = String(value.toInt());
       //Serial.println("apparent " + value);
     }
   }
@@ -235,7 +235,7 @@ void DarkSky::value(String value) {
       struct tm * timeinfo = localtime (&tSet);
       char tmpTimeBuff[8];
       sprintf(tmpTimeBuff, "%02i:%02i %s", timeinfo->tm_hour > 12 ? timeinfo->tm_hour - 12 : timeinfo->tm_hour , timeinfo->tm_min, timeinfo->tm_hour > 11 ? "pm" : "am");
-      data->sunrise = "Rise: " + String(tmpTimeBuff);
+      data->sunrise = String(tmpTimeBuff);
       //Serial.println(dayData.forecastHighTemp + " : " + value);
     }
   }
@@ -246,7 +246,7 @@ void DarkSky::value(String value) {
       struct tm * timeinfo = localtime (&tSet);
       char tmpTimeBuff[8];
       sprintf(tmpTimeBuff, "%02i:%02i %s", timeinfo->tm_hour > 12 ? timeinfo->tm_hour - 12 : timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_hour > 11 ? "pm" : "am");
-      data->sunset = "Set:  " + String(tmpTimeBuff);
+      data->sunset = String(tmpTimeBuff);
       //Serial.println(dayData.forecastHighTemp + " : " + value);
     }
   }

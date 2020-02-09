@@ -1,3 +1,5 @@
+//Based on the work of Daniel Einhorn -- adapted for DarkSky API
+
 const char ThingPulseLogo[] PROGMEM = {
   0x01, // Version: 1
   0x02, // BitDepth: 2
@@ -3771,9 +3773,9 @@ const char miniunknown[] PROGMEM = {
 const char* getMeteoconIconFromProgmem(String iconText) {
   if (iconText == "clear-night" || iconText == "clear-day") return clear;  
   if (iconText == "sunny" || iconText == "") return sunny;
-  if (iconText == "partly-cloudy-day" || iconText == "partly-cloudy-night") return partlysunny;
-  if (iconText == "03d" || iconText == "03n") return partlycloudy;
-  if (iconText == "cloudy" || iconText == "04n") return mostlycloudy;
+  if (iconText == "partly-cloudy-day" || iconText == "") return partlysunny;
+  if (iconText == "partly-cloudy-night" || iconText == "03n") return partlycloudy;
+  if (iconText == "cloudy" || iconText == "04n") return cloudy;
   if (iconText == "rain" || iconText == "09n") return rain;
   if (iconText == "sleet" || iconText == "10n") return sleet;
   if (iconText == "11d" || iconText == "11n") return tstorms;
@@ -3786,7 +3788,7 @@ const char* getMiniMeteoconIconFromProgmem(String iconText) {
   if (iconText == "sunny" || iconText == "") return minisunny;
   if (iconText == "partly-cloudy-day" || iconText == "02n") return minipartlysunny;
   if (iconText == "partly-cloudy-night" || iconText == "03n") return minipartlycloudy;
-  if (iconText == "cloudy" || iconText == "04n") return minimostlycloudy;
+  if (iconText == "cloudy" || iconText == "04n") return minicloudy;
   if (iconText == "rain" || iconText == "09n") return minirain;
   if (iconText == "snow" || iconText == "10n") return minisnow;
   if (iconText == "11d" || iconText == "11n") return minitstorms;
