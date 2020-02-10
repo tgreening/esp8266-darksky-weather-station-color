@@ -1,7 +1,7 @@
 # esp8266-darksky-weather-station-color
 An adaption of the esp8266-weather-station-color by Daniel Einhorn for the DarkSKY API.
 
-See [https://github.com/ThingPulse/esp8266-weather-station-color](https://github.com/ThingPulse/esp8266-weather-station-color) for details on hos excellent work.
+See [https://github.com/ThingPulse/esp8266-weather-station-color](https://github.com/ThingPulse/esp8266-weather-station-color) for details on his excellent work.
 
 ### Alterations
 This project will show you daily forecast rather than every 12 hours.
@@ -14,10 +14,12 @@ I also removed the moon phases for more data about today.
 
 I **love** Wemos D1 Chips!  They are so easy to use!! 
 I buy them from the offical Lolin(Wemos) store on AliExpress.
-HEre's the Wemos D1 Min board [here](https://www.aliexpress.com/item/32529101036.html?spm=a2g0s.9042311.0.0.27424c4dulLe7M)
+
+Here's the Wemos D1 Min board [here](https://www.aliexpress.com/item/32529101036.html?spm=a2g0s.9042311.0.0.27424c4dulLe7M)
+
 Here's the 2.4" TFT LCD [here](https://www.aliexpress.com/item/32919729730.html?spm=a2g0s.9042311.0.0.27424c4d83MVWp)
 
-Look at the bottom of the LCD so you solder the connector on the Wemos witht he correct positioning so they match the LCD.
+Look at the bottom of the LCD so you solder the connector on the Wemos with the correct positioning so they match the LCD.
 
 ## Coding
 
@@ -43,7 +45,7 @@ find and select esp8266-darksky-weather-station-color.ino from the previous step
 
 #### Configuration & customization
 
-In one of the tabs the IDE opened settings.h. Go through the file and adjust the two handful of configuration parameters. They are all documented inside the file directly. Everything should be self-explanatory. Most importantly you will need to set the DArkSkyAPI key you obtained in a previous step.
+In one of the tabs the IDE opened settings.h. Go through the file and adjust the two handful of configuration parameters. They are all documented inside the file directly. Everything should be self-explanatory. Most importantly you will need to set the DarkSky API key you obtained in a previous step.
 
 #### Upload code to device
 
