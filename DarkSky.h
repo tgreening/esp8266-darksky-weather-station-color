@@ -18,6 +18,7 @@
 */
 
 //Based on the work of Daniel Einhorn -- adapted for DarkSky API
+
 #pragma once
 #include <JsonListener.h>
 #include <JsonStreamingParser.h>
