@@ -234,7 +234,7 @@ void DarkSky::value(String value) {
       time_t tSet = value.toInt() - 5 * 3600;
       struct tm * timeinfo = localtime (&tSet);
       char tmpTimeBuff[8];
-      sprintf(tmpTimeBuff, "%02i:%02i %s", timeinfo->tm_hour > 12 ? timeinfo->tm_hour - 12 : timeinfo->tm_hour , timeinfo->tm_min, timeinfo->tm_hour > 11 ? "pm" : "am");
+      sprintf(tmpTimeBuff, "%i:%02i %s", timeinfo->tm_hour > 12 ? timeinfo->tm_hour - 12 : timeinfo->tm_hour , timeinfo->tm_min, timeinfo->tm_hour > 11 ? "pm" : "am");
       data->sunrise = String(tmpTimeBuff);
       //Serial.println(dayData.forecastHighTemp + " : " + value);
     }
@@ -245,7 +245,7 @@ void DarkSky::value(String value) {
       time_t tSet = value.toInt() - 5 * 3600;
       struct tm * timeinfo = localtime (&tSet);
       char tmpTimeBuff[8];
-      sprintf(tmpTimeBuff, "%02i:%02i %s", timeinfo->tm_hour > 12 ? timeinfo->tm_hour - 12 : timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_hour > 11 ? "pm" : "am");
+      sprintf(tmpTimeBuff, "%i:%02i %s", timeinfo->tm_hour > 12 ? timeinfo->tm_hour - 12 : timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_hour > 11 ? "pm" : "am");
       data->sunset = String(tmpTimeBuff);
       //Serial.println(dayData.forecastHighTemp + " : " + value);
     }

@@ -46,7 +46,6 @@
 #include <ILI9341_SPI.h>
 
 #include "ArialRounded.h"
-#include "moonphases.h"
 #include "weathericons.h"
 
 #define MINI_BLACK 0
@@ -323,7 +322,7 @@ void drawTime() {
 
   if (IS_STYLE_12HR) {
     int hour = (timeinfo->tm_hour + 11) % 12 + 1; // take care of noon and midnight
-    sprintf(time_str, "%2d:%02d\n", hour, timeinfo->tm_min);
+    sprintf(time_str, "%d:%02d\n", hour, timeinfo->tm_min);
   } else {
     sprintf(time_str, "%02d:%02d\n", timeinfo->tm_hour, timeinfo->tm_min);
   }
@@ -409,12 +408,6 @@ void drawForecastDetail(uint16_t x, uint16_t y, uint8_t dayIndex) {
 
 // draw moonphase and sunrise/set and moonrise/set
 void drawAstronomy() {
-
-  gfx.setFont(MoonPhases_Regular_36);
-  gfx.setColor(MINI_WHITE);
-  gfx.setTextAlignment(TEXT_ALIGN_CENTER);
-  //  gfx.drawString(120, 275, moonAgeImage);
-
   gfx.setColor(MINI_WHITE);
   gfx.setFont(ArialRoundedMTBold_14);
   gfx.setTextAlignment(TEXT_ALIGN_CENTER);
