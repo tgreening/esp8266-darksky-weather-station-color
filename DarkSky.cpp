@@ -31,7 +31,6 @@
 
 #include "DarkSky.h"
 
-const char* fingerprint = "D9 58 1A 90 34 51 AC E1 17 DA 53 64 1D 0D BE 93 96 1A D9 D1";   //"EA C3 0B 36 E8 23 4D 15 12 31 9B CE 08 51 27 AE C1 1D 67 2B";
 DSForecast *tempForecasts;
 DarkSky::DarkSky(int maxForecasts) {
   this->maxForecasts = maxForecasts;
@@ -44,8 +43,10 @@ void DarkSky::updateData(DarkSkyData *data, String apiKey, double latitude, doub
   parser.setListener(this);
   int isBody = false;
 
-  WiFiClientSecure secureClient;
-  secureClient.setFingerprint(fingerprint);
+  BearSSL::WiFiClientSecure secureClient;
+ 
+  //using insecure becuase tracking fingerprint changes too oftern
+  secureClient.setInsecure();
   Serial.printf("Before connection: %d", ESP.getFreeHeap());
   Serial.println();
   secureClient.setBufferSizes(10240, 512);

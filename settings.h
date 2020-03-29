@@ -1,5 +1,5 @@
 /**The MIT License (MIT)
-  Copyright (c) 2015 by Daniel Eichhorn
+  Copyright (c) 2020 by Tony Greening
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
   in the Software without restriction, including without limitation the rights
@@ -15,8 +15,10 @@
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
-  See more at http://blog.squix.ch
+
 */
+
+//Based on the work of Daniel Einhorn -- adapted for DarkSky API
 
 #include <simpleDSTadjust.h>
 
@@ -27,7 +29,6 @@
 
 const int UPDATE_INTERVAL_SECS = 20 * 60; // Update every 10 minutes
 const int SLEEP_INTERVAL_SECS = 0;        // Going to sleep after idle times, set 0 for insomnia
-
 
 const String DISPLAYED_CITY_NAME = "CITY";
 const String DARKSKY_API_KEY = "API KEY";
@@ -43,10 +44,10 @@ const String SUN_MOON_TEXT[] = {"Sun", "Rise", "Set", "Moon", "Age", "Illum"};
 const String MOON_PHASES[] = {"New Moon", "Waxing Crescent", "First Quarter", "Waxing Gibbous",
                               "Full Moon", "Waning Gibbous", "Third quarter", "Waning Crescent"
                              };
-
 #define UTC_OFFSET -5
-struct dstRule StartRule = {"EDT", Last, Sun, Mar, 2, 3600}; // Central European Summer Time = UTC/GMT +2 hours
-struct dstRule EndRule = {"EST", First, Sun, Nov, 2, 0};       // Central European Time = UTC/GMT +1 hour
+//US Eastern Time Zone (New York, Boston)
+struct dstRule StartRule = {"EDT", Second, Sun, Mar, 2, 3600};    // Daylight time = UTC/GMT -4 hours
+struct dstRule EndRule = {"EST", First, Sun, Nov, 2, 0};          // Standard time = UTC/GMT -5 hour
 
 // Settings for Boston
 // #define UTC_OFFSET -5

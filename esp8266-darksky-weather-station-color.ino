@@ -121,6 +121,7 @@ String moonAgeImage = "";
 uint16_t screen = 0;
 bool canBtnPress;
 time_t dstOffset = 0;
+long timerPress = 0;
 
 
 void connectWifi() {
@@ -253,7 +254,7 @@ void loop() {
     lastDownloadUpdate = millis();
   }
 
-  /* if (SLEEP_INTERVAL_SECS && millis() - timerPress >= SLEEP_INTERVAL_SECS * 1000) { // after 2 minutes go to sleep
+   if (SLEEP_INTERVAL_SECS && millis() - timerPress >= SLEEP_INTERVAL_SECS * 1000) { // after 2 minutes go to sleep
      drawProgress(25, "Going to Sleep!");
      delay(1000);
      drawProgress(50, "Going to Sleep!");
@@ -263,7 +264,7 @@ void loop() {
      drawProgress(100, "Going to Sleep!");
      // go to deepsleep for xx minutes or 0 = permanently
      ESP.deepSleep(0,  WAKE_RF_DEFAULT);                       // 0 delay = permanently to sleep
-    }*/
+    }
 }
 
 // Update the internet based information and update screen
