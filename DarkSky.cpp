@@ -31,7 +31,7 @@
 
 #include "DarkSky.h"
 
-const char* fingerprint = "EA C3 0B 36 E8 23 4D 15 12 31 9B CE 08 51 27 AE C1 1D 67 2B";
+const char* fingerprint = "D9 58 1A 90 34 51 AC E1 17 DA 53 64 1D 0D BE 93 96 1A D9 D1";   //"EA C3 0B 36 E8 23 4D 15 12 31 9B CE 08 51 27 AE C1 1D 67 2B";
 DSForecast *tempForecasts;
 DarkSky::DarkSky(int maxForecasts) {
   this->maxForecasts = maxForecasts;
@@ -46,11 +46,11 @@ void DarkSky::updateData(DarkSkyData *data, String apiKey, double latitude, doub
 
   WiFiClientSecure secureClient;
   secureClient.setFingerprint(fingerprint);
-  //Serial.printf("Before connection: %d", ESP.getFreeHeap());
-  //Serial.println();
+  Serial.printf("Before connection: %d", ESP.getFreeHeap());
+  Serial.println();
   secureClient.setBufferSizes(10240, 512);
   if (!secureClient.connect(host, httpsPort)) {
-    //Serial.println("connection failed");
+    Serial.println("connection failed");
     return;
   }
   String url = "/forecast/" + apiKey + "/" + String(latitude) + "," + String(longitude) + "?exclude=[minutely,hourly,alerts,flags]";
@@ -62,24 +62,28 @@ void DarkSky::updateData(DarkSkyData *data, String apiKey, double latitude, doub
 
   while (secureClient.connected()) {
     String line = secureClient.readStringUntil('\n');
+    Serial.println(line);
     if (line == "\r") {
       break;
-    }
-  }
 
-  while (secureClient.available()) {
-    char c = secureClient.read();
-    if (c == '{' || c == '[') {
-      isBody = true;
     }
-    if (isBody) {
-      parser.parse(c);
-    }
-  }
 
-  secureClient.stop();
-  data->forecasts = tempForecasts;
+    while (secureClient.available()) {
+      char c = secureClient.read();
+      Serial.print(c);
+      if (c == '{' || c == '[') {
+        isBody = true;
+      }
+      if (isBody) {
+        parser.parse(c);
+      }
+    }
+
+    secureClient.stop();
+    data->forecasts = tempForecasts;
+  }
 }
+
 
 
 void DarkSky::getData()  {
@@ -96,7 +100,7 @@ void DarkSky::startDocument() {
 void DarkSky::key(String key) {
   currentKey = key;
   if (forecastDay < this->maxForecasts) {
-    //Serial.println(key);
+    Serial.println(key);
   }
   if (currentKey == TODAYS_DATA_KEY) {
     currentParent = TODAYS_DATA;
@@ -106,6 +110,7 @@ void DarkSky::key(String key) {
 }
 
 void DarkSky::value(String value) {
+  Serial.println(value);
   if (currentKey == "time" && forecastDay < this->maxForecasts) {
     if (currentParent == FORECAST_DATA) {
       forecastDay++;
@@ -177,7 +182,7 @@ void DarkSky::value(String value) {
     }
   }
 
-    if (currentKey == "precipAccumulation" && forecastDay < this->maxForecasts) {
+  if (currentKey == "precipAccumulation" && forecastDay < this->maxForecasts) {
     if (currentParent == FORECAST_DATA) {
       dayData.forecastPrecipTotal = String(value);
       //Serial.println("pressure " + value);

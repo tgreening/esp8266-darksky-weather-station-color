@@ -119,7 +119,6 @@ long lastDownloadUpdate = millis();
 
 String moonAgeImage = "";
 uint16_t screen = 0;
-long timerPress;
 bool canBtnPress;
 time_t dstOffset = 0;
 
@@ -163,7 +162,7 @@ void setup() {
   gfx.commit();
 
   connectWifi();
-  //Serial.println("Initializing touch screen...");
+  Serial.println("Initializing touch screen...");
   ts.begin();
 
   while (WiFi.status() != WL_CONNECTED) {
@@ -193,8 +192,8 @@ void setup() {
   carousel.disableAllIndicators();
 
   updateData();
-  timerPress = millis();
   canBtnPress = true;
+  Serial.println("Done with setup");
 }
 long lastDrew = 0;
 bool btnClick;
@@ -204,6 +203,7 @@ uint8_t currentTouchPoint = 0;
 
 void loop() {
   gfx.fillBuffer(MINI_BLACK);
+  Serial.println("In loop..");
   if (touchController.isTouched(0)) {
     TS_Point p = touchController.getPoint();
     //Serial.printf("x: %i y: %i\n", p.x, p.y);
@@ -213,19 +213,28 @@ void loop() {
       screen = (screen + 1) % screenCount;
     }
   }
+  Serial.println(screen);
 
   if (screen == 0) {
+    Serial.println("draw time..");
+
     drawTime();
+    Serial.println("draw wifi..");
     drawWifiQuality();
+    Serial.println("carousel update..");
     int remainingTimeBudget = carousel.update();
-    //Serial.println(remainingTimeBudget);
+    Serial.println(remainingTimeBudget);
     if (remainingTimeBudget > 0) {
       // You can do some work here
       //Don't do stuff if you are below your
       //time budget.
       delay(remainingTimeBudget);
     }
+    Serial.print("Low temp: ");
+    Serial.println(data.forecasts[0].forecastLowTemp);
+    Serial.println("draw current weather..");
     drawCurrentWeather();
+    Serial.println("draw astronomy..");
     drawAstronomy();
   } else if (screen == 1) {
     drawCurrentWeatherDetail();
@@ -244,17 +253,17 @@ void loop() {
     lastDownloadUpdate = millis();
   }
 
-  if (SLEEP_INTERVAL_SECS && millis() - timerPress >= SLEEP_INTERVAL_SECS * 1000) { // after 2 minutes go to sleep
-    drawProgress(25, "Going to Sleep!");
-    delay(1000);
-    drawProgress(50, "Going to Sleep!");
-    delay(1000);
-    drawProgress(75, "Going to Sleep!");
-    delay(1000);
-    drawProgress(100, "Going to Sleep!");
-    // go to deepsleep for xx minutes or 0 = permanently
-    ESP.deepSleep(0,  WAKE_RF_DEFAULT);                       // 0 delay = permanently to sleep
-  }
+  /* if (SLEEP_INTERVAL_SECS && millis() - timerPress >= SLEEP_INTERVAL_SECS * 1000) { // after 2 minutes go to sleep
+     drawProgress(25, "Going to Sleep!");
+     delay(1000);
+     drawProgress(50, "Going to Sleep!");
+     delay(1000);
+     drawProgress(75, "Going to Sleep!");
+     delay(1000);
+     drawProgress(100, "Going to Sleep!");
+     // go to deepsleep for xx minutes or 0 = permanently
+     ESP.deepSleep(0,  WAKE_RF_DEFAULT);                       // 0 delay = permanently to sleep
+    }*/
 }
 
 // Update the internet based information and update screen
@@ -278,11 +287,14 @@ void updateData() {
 
   drawProgress(50, "Updating conditions...");
   DarkSky *dataClient = new DarkSky(MAX_FORECASTS);
+  Serial.println("Starting Update....");
   dataClient->updateData(&data, DARKSKY_API_KEY , LATITUDE, LONGITUDE);
-  delete dataClient;
-  dataClient = nullptr;
+  Serial.println("Got data....");
   delay(1000);
-  //Serial.println("Done with Update....");
+  Serial.println("Done with Update....");
+  yield();
+  // delete dataClient;
+  //dataClient = nullptr;
 }
 
 // Progress bar helper
